@@ -48,7 +48,7 @@ class AppointmentCreate extends Component
         // 1. Validar que la hora de fin sea después de la de inicio
         if ($end->lte($start)) {
             $this->notification()->error(
-                $title = 'Error de Horario',
+                $title = 'Error de horario',
                 $description = 'La hora de fin debe ser posterior a la hora de inicio.'
             );
             $this->addError('end_time', 'Hora inválida.');
@@ -60,8 +60,8 @@ class AppointmentCreate extends Component
 
         if ($diff > 60) {
             $this->notification()->error(
-                $title = 'Tiempo Excedido',
-                $description = "La cita no puede durar más de 60 minutos. (Has seleccionado $diff min)."
+                $title = 'Tiempo excedido',
+                $description = "La cita no puede durar mas de 60 minutos. (Has seleccionado $diff min)."
             );
             $this->addError('end_time', "Máximo 1 hora permitido.");
             return;
@@ -70,7 +70,7 @@ class AppointmentCreate extends Component
         $this_start_str = $start->format('H:i:s');
         $this_end_str = $end->format('H:i:s');
 
-        // 3. VALIDAR CONTRA EL HORARIO LABORAL DEL MÉDICO
+        // 3. Validar contra el horario laboral del veterinario
         $dayOfWeek = Carbon::parse($this->date)->dayOfWeek;
         $dayName = $this->getSpanishDayName($dayOfWeek);
 
@@ -82,10 +82,10 @@ class AppointmentCreate extends Component
 
         if (!$isWithinSchedule) {
             $this->notification()->error(
-                $title = 'Fuera de Horario',
-                $description = "El médico no labora los días $dayName en el rango de $this_start_str a $this_end_str."
+                $title = 'Fuera de horario',
+                $description = "El veterinario no labora los dias $dayName en el rango de $this_start_str a $this_end_str."
             );
-            $this->addError('start_time', 'El médico no está disponible en este horario laboral.');
+            $this->addError('start_time', 'El veterinario no esta disponible en este horario laboral.');
             return;
         }
 
@@ -101,8 +101,8 @@ class AppointmentCreate extends Component
 
         if ($overlap) {
             $this->notification()->warning(
-                $title = 'Horario Ocupado',
-                $description = 'El médico ya tiene una cita programada en este horario.'
+                $title = 'Horario ocupado',
+                $description = 'El veterinario ya tiene una cita programada en este horario.'
             );
             $this->addError('start_time', 'Horario no disponible.');
             return;
@@ -132,7 +132,7 @@ class AppointmentCreate extends Component
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Éxito!',
-            'text' => 'La cita ha sido creada correctamente.',
+            'text' => 'La cita veterinaria ha sido creada correctamente.',
         ]);
 
         return redirect()->route('admin.appointments.index');

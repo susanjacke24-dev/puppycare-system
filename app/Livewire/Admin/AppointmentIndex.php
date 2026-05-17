@@ -72,7 +72,7 @@ class AppointmentIndex extends Component
             ->exists();
 
         if (!$isWithinSchedule) {
-            $this->notification()->error('Fuera de Horario', 'El médico no labora en este horario.');
+            $this->notification()->error('Fuera de Horario', 'El veterinario no labora en este horario.');
             return;
         }
 
@@ -103,12 +103,12 @@ class AppointmentIndex extends Component
         ]);
 
         $this->isOpen = false;
-        $this->notification()->success('Cita Actualizada', 'Los datos de la cita han sido modificados.');
+        $this->notification()->success('Cita actualizada', 'Los datos de la cita veterinaria han sido modificados.');
     }
 
     public function sendManualReport()
     {
-        Artisan::call('hospital:automate');
+        Artisan::call('puppycare:automate');
         
         $this->notification()->success(
             $title = 'Reporte Solicitado',
@@ -137,7 +137,7 @@ class AppointmentIndex extends Component
         $appointment->delete();
 
         $this->notification()->success(
-            $title = 'Cita Eliminada',
+            $title = 'Cita eliminada',
             $description = 'La cita ha sido removida y se ha notificado a las partes.'
         );
     }
@@ -146,8 +146,13 @@ class AppointmentIndex extends Component
     {
         $appointments = Appointment::with(['patient.user', 'doctor'])
             ->where(function($query) {
-                $query->whereHas('patient.user', function($q) {
-                    $q->where('name', 'like', '%' . $this->search . '%');
+                $query->whereHas('patient', function($q) {
+                    $q->where('pet_name', 'like', '%' . $this->search . '%')
+                        ->orWhere('species', 'like', '%' . $this->search . '%')
+                        ->orWhere('breed', 'like', '%' . $this->search . '%')
+                        ->orWhereHas('user', function ($ownerQuery) {
+                            $ownerQuery->where('name', 'like', '%' . $this->search . '%');
+                        });
                 })
                 ->orWhereHas('doctor', function($q) {
                     $q->where('name', 'like', '%' . $this->search . '%');

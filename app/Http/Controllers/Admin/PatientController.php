@@ -56,6 +56,11 @@ class PatientController extends Controller
     public function update(Request $request, Patient $patient)
     {
      $data = $request->validate([
+        'pet_name' => 'nullable|string|min:2|max:255',
+        'species' => 'nullable|string|min:2|max:100',
+        'breed' => 'nullable|string|min:2|max:100',
+        'sex' => 'nullable|string|max:30',
+        'birth_date' => 'nullable|date|before_or_equal:today',
         'blood_type_id' => 'nullable|exists:blood_types,id',
         'allergies' => 'nullable|string|min:3|max:255',
         'chronic_conditions' => 'nullable|string|min:3|max:255',
@@ -63,7 +68,7 @@ class PatientController extends Controller
         'family_history' => 'nullable|string|min:3|max:255',
         'observations' => 'nullable|string|min:3|max:255',
         'emergency_contact_name' => 'nullable|string|min:3|max:255',
-        'emergency_contact_phone' => ['nullable', 'string', 'max:12', 'min:10', 'regex:/^[0-9]+$/'],
+        'emergency_contact_phone' => ['nullable', 'string', 'max:20', 'min:10', 'regex:/^[0-9()\s-]+$/'],
         'emergency_contact_relationship' => 'nullable|string|min:3|max:50',
      ]);
 
@@ -71,13 +76,13 @@ class PatientController extends Controller
 
      session()->flash('swal', [
         'icon' => 'success',
-        'title' => 'Paciente actualizado',
-        'text' => 'El paciente ha sido actualizado exitosamente'
+        'title' => 'Mascota actualizada',
+        'text' => 'El expediente de la mascota ha sido actualizado exitosamente'
      ]);
 
      return redirect()
         ->route('admin.patients.edit', $patient)
-        ->with('success', 'Paciente actualizado correctamente');
+        ->with('success', 'Mascota actualizada correctamente');
     }
 
     /**

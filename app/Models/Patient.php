@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     protected $fillable = [
+        'pet_name',
+        'species',
+        'breed',
+        'sex',
+        'birth_date',
+        'blood_type_id',
         'allergies',
         'chronic_conditions',
         'surgical_history',
@@ -17,13 +23,27 @@ class Patient extends Model
         'emergency_contact_relationship',
     ];
 
-    // Relación uno a uno inversa
-    public function user(){
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
+
+    public function getPetDisplayNameAttribute(): string
+    {
+        return $this->pet_name ?: 'Mascota sin nombre';
+    }
+
+    public function getOwnerNameAttribute(): string
+    {
+        return $this->user->name ?? 'Dueño sin registrar';
+    }
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    // Relación uno a uno inversa
-    public function bloodType(){
+    public function bloodType()
+    {
         return $this->belongsTo(BloodType::class);
     }
 }

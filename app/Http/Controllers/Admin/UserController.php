@@ -47,13 +47,13 @@ class UserController extends Controller
         session()->flash('swal', [
             'icon' => 'success',
             'title' => 'Usuario creado correctamente',
-            'text' => 'El usuario ha sido creado correctamente',
+            'text' => 'El usuario ha sido creado correctamente. Si es dueño, completa el expediente de su mascota.',
         ]);
 
-        // Si el usuario creado es un paciente, envía el módulo pacientes
+        // Si el usuario creado es un dueño, envia al expediente de su mascota.
         if ($user->hasRole('Paciente')) {
 
-            // Creamos el registro para un paciente
+            // Creamos el expediente base de la mascota.
             $patient = $user->patient()->create([]);
 
             return redirect()->route('admin.patients.edit', $patient);

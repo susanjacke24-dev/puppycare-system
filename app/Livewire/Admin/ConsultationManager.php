@@ -106,7 +106,7 @@ class ConsultationManager extends Component
     {
         return view('livewire.admin.consultation-manager')
             ->layout('layouts.admin', [
-                'title' => 'Consulta Médica - ' . ($this->appointment->patient->user->name ?? 'Paciente')
+                'title' => 'Consulta veterinaria - ' . ($this->appointment->patient->pet_display_name ?? 'Mascota')
             ]);
     }
 }

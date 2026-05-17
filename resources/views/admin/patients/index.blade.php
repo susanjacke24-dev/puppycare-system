@@ -1,10 +1,10 @@
-<x-admin-layout title="Pacientes" :breadcrumbs="[
+<x-admin-layout title="Mascotas" :breadcrumbs="[
     [
       'name' => 'Dashboard', 
     'href' => route('admin.dashboard')
     ],
     
-    ['name' => 'Pacientes'],
+    ['name' => 'Mascotas'],
 ]">
 
   @livewire('admin.datatables.patient-table')

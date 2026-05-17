@@ -10,7 +10,7 @@
             @csrf
           <div class="space-y-4">
             <div class="grid lg:grid-cols-2 gap-4">
-            <x-wire-input label="Nombre" name="name" placeholder="Nombre completo" :required :value="old('name')"></x-wire-input>
+            <x-wire-input label="Nombre completo" name="name" placeholder="Nombre del dueño, veterinario o usuario" :required :value="old('name')"></x-wire-input>
 
             <x-wire-input label="Correo electrónico" name="email" type="email" placeholder="ejemplo@dominio.com" :required autocomplete="email" :value="old('email')"></x-wire-input>
             
@@ -31,7 +31,7 @@
             </option>
             @foreach ($roles as $role)
             <option value="{{ $role->id }}" @selected(old('role_id') == $role->id)>
-            {{ $role->name }}
+            {{ $role->name === 'Paciente' ? 'Dueño' : ($role->name === 'Doctor' ? 'Veterinario' : $role->name) }}
            </option>
             @endforeach
             </x-wire-native-select>

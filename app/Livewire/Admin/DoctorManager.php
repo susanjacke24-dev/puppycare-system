@@ -87,11 +87,11 @@ class DoctorManager extends Component
         if ($this->isEditMode) {
             $doctor = User::findOrFail($this->doctorId);
             $doctor->update($userData);
-            $message = 'Doctor actualizado correctamente.';
+            $message = 'Veterinario actualizado correctamente.';
         } else {
             $doctor = User::create($userData);
             $doctor->assignRole('Doctor');
-            $message = 'Doctor creado correctamente.';
+            $message = 'Veterinario creado correctamente.';
         }
 
         $this->isOpen = false;
@@ -112,7 +112,7 @@ class DoctorManager extends Component
         session()->flash('swal', [
             'icon' => 'success',
             'title' => 'Eliminado',
-            'text' => 'El registro del doctor ha sido eliminado.',
+            'text' => 'El registro del veterinario ha sido eliminado.',
         ]);
     }
 

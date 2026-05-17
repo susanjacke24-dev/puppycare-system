@@ -4,8 +4,9 @@
     <!-- Encabezado Principal -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $appointment->patient->user->name }}</h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">DNI: <span class="font-medium text-gray-700 dark:text-gray-300">{{ $appointment->patient->user->id_number ?? 'No registrado' }}</span></p>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $appointment->patient->pet_display_name }}</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Dueño: <span class="font-medium text-gray-700 dark:text-gray-300">{{ $appointment->patient->owner_name }}</span></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ $appointment->patient->species ?? 'Especie no registrada' }} {{ $appointment->patient->breed ? '- '.$appointment->patient->breed : '' }}</p>
         </div>
         <div class="mt-4 md:mt-0">
             <button @click="showHistory = true; $wire.loadHistory()" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700 transition">
@@ -39,7 +40,7 @@
                 <div class="grid grid-cols-1 gap-6">
                     <div>
                         <label for="diagnosis" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Diagnóstico <span class="text-red-600">*</span></label>
-                        <textarea id="diagnosis" wire:model="diagnosis" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describa el diagnóstico del paciente..."></textarea>
+                        <textarea id="diagnosis" wire:model="diagnosis" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describa el diagnostico de la mascota..."></textarea>
                         @error('diagnosis') <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p> @enderror
                     </div>
                     <div>
@@ -57,9 +58,9 @@
             <!-- Pestaña Receta -->
             <div x-show="tab === 'receta'" class="space-y-4">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Prescripción de Medicamentos</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Prescripcion de medicamentos</h3>
                     <button type="button" wire:click="addMedicine" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 transition">
-                        <i class="fas fa-plus mr-2"></i> Añadir Medicamento
+                        <i class="fas fa-plus mr-2"></i> Añadir medicamento
                     </button>
                 </div>
 
@@ -97,7 +98,7 @@
                             @empty
                                 <tr>
                                     <td colspan="4" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 italic">
-                                        No se han agregado medicamentos. Haz clic en "Añadir Medicamento" para comenzar.
+                                        No se han agregado medicamentos. Haz clic en "Añadir medicamento" para comenzar.
                                     </td>
                                 </tr>
                             @endforelse
@@ -109,7 +110,7 @@
             <!-- Footer / Save Button -->
             <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end">
                 <button type="button" wire:click="saveConsultation" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 shadow-md transition">
-                    Finalizar y Completar Consulta
+                    Finalizar consulta
                 </button>
             </div>
         </div>
@@ -137,7 +138,7 @@
             <!-- Modal Panel -->
             <div class="inline-block align-middle bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-gray-200 dark:border-gray-700">
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-700">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Historial de Consultas: {{ $appointment->patient->user->name }}</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Historial de consultas: {{ $appointment->patient->pet_display_name }}</h3>
                     <button @click="showHistory = false" class="text-gray-400 hover:text-gray-500 focus:outline-none">
                         <i class="fas fa-times text-xl"></i>
                     </button>
@@ -149,7 +150,7 @@
                             <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                                 <div class="flex justify-between items-start mb-2">
                                     <span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ $past->date->format('d/m/Y') }}</span>
-                                    <span class="text-[10px] text-gray-500">Dr. {{ $past->doctor->name }}</span>
+                                    <span class="text-[10px] text-gray-500">Vet. {{ $past->doctor->name }}</span>
                                 </div>
                                 <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-2 line-clamp-1" title="{{ $past->diagnosis }}">Dx: {{ $past->diagnosis }}</h4>
                                 <div class="space-y-1">
@@ -171,7 +172,7 @@
                         @empty
                             <div class="col-span-full py-12 text-center text-gray-500 dark:text-gray-400">
                                 <i class="fas fa-folder-open text-4xl mb-4 opacity-20"></i>
-                                <p>No se encontraron registros de consultas previas para este paciente.</p>
+                                <p>No se encontraron registros de consultas previas para esta mascota.</p>
                             </div>
                         @endforelse
                     </div>
@@ -179,7 +180,7 @@
 
                 <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-700 flex justify-end">
                     <button @click="showHistory = false" type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700">
-                        Cerrar Historial
+                        Cerrar historial
                     </button>
                 </div>
             </div>

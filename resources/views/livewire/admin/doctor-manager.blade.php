@@ -2,11 +2,11 @@
     <!-- Breadcrumb & Title -->
     <div class="mb-6 flex justify-between items-center">
         <div>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Dashboard / Doctores</p>
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Doctores</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Dashboard / Veterinarios</p>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Veterinarios</h2>
         </div>
         <button wire:click="create" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition">
-            <i class="fas fa-plus mr-2"></i> Nuevo Doctor
+            <i class="fas fa-plus mr-2"></i> Nuevo veterinario
         </button>
     </div>
 
@@ -34,7 +34,7 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 font-semibold">Nombre</th>
                     <th scope="col" class="px-6 py-3 font-semibold">Email</th>
-                    <th scope="col" class="px-6 py-3 font-semibold">DNI</th>
+                    <th scope="col" class="px-6 py-3 font-semibold">ID profesional</th>
                     <th scope="col" class="px-6 py-3 font-semibold">Teléfono</th>
                     <th scope="col" class="px-6 py-3 font-semibold">Especialidad</th>
                     <th scope="col" class="px-6 py-3 font-semibold text-center">Acciones</th>
@@ -69,7 +69,7 @@
                 @empty
                     <tr>
                         <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400 italic">
-                            No se encontraron doctores registrados.
+                            No se encontraron veterinarios registrados.
                         </td>
                     </tr>
                 @endforelse
@@ -93,7 +93,7 @@
                     <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="flex justify-between items-center mb-4 border-b pb-2 dark:border-gray-700">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                                {{ $isEditMode ? 'Editar Doctor' : 'Nuevo Doctor' }}
+                                {{ $isEditMode ? 'Editar veterinario' : 'Nuevo veterinario' }}
                             </h3>
                             <button type="button" wire:click="$set('isOpen', false)" class="text-gray-400 hover:text-gray-500">
                                 <i class="fas fa-times"></i>
@@ -114,7 +114,7 @@
                                     @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">DNI / ID</label>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ID profesional</label>
                                     <input type="text" wire:model="id_number" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                     @error('id_number') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                 </div>

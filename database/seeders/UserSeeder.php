@@ -2,22 +2,24 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'susanjacke.24@gmail.com',
-            'password' => bcrypt('12345678'),
-            'id_number' => '123456789',
-            'phone' => '9999999999',
-            'address' => 'Test Address',
-        ])->assignRole('Administrador');
+        $user = User::updateOrCreate(
+            ['email' => 'susanjacke.24@gmail.com'],
+            [
+                'name' => 'Administradora PuppyCare',
+                'password' => bcrypt('12345678'),
+                'id_number' => '123456789',
+                'phone' => '9999999999',
+                'address' => 'PuppyCare',
+            ]
+        );
+
+        $user->assignRole('Administrador');
     }
 }
-
-

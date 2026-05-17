@@ -54,8 +54,8 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Paciente</th>
-                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Doctor</th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Mascota / Dueño</th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Veterinario</th>
                                     <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Fecha</th>
                                     <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Hora Inicio</th>
                                     <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">Estatus</th>
@@ -66,8 +66,8 @@
                                 @forelse($appointments as $appointment)
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $appointment->patient->user->name ?? 'N/A' }}</div>
-                                            <div class="text-xs font-normal text-gray-500 dark:text-gray-400">{{ $appointment->patient->user->email ?? '' }}</div>
+                                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $appointment->patient->pet_display_name ?? 'N/A' }}</div>
+                                            <div class="text-xs font-normal text-gray-500 dark:text-gray-400">Dueño: {{ $appointment->patient->owner_name ?? 'N/A' }}</div>
                                         </td>
                                         <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ $appointment->doctor->name ?? 'N/A' }}

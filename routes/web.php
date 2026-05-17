@@ -29,7 +29,7 @@ Route::middleware([
         Route::get('appointments/{appointment}/download', [\App\Http\Controllers\Admin\AppointmentController::class, 'downloadVoucher'])->name('appointments.download');
     });
 
-    // Módulo de Doctores y Horarios
+    // Modulo de veterinarios y horarios
     Route::get('/doctors', App\Livewire\Admin\DoctorManager::class)->name('admin.doctors.index');
     Route::get('/doctors/{doctor}/schedule', App\Livewire\Admin\DoctorScheduleManager::class)->name('admin.doctors.schedule');
 });

@@ -15,7 +15,7 @@ class TestMailCommand extends Command
         $this->info('Intentando enviar correo de prueba...');
 
         try {
-            Mail::raw('Si recibes esto, tu configuración de Gmail en Healthify funciona perfectamente.', function ($message) {
+            Mail::raw('Si recibes esto, tu configuración de Gmail en PuppyCare funciona perfectamente.', function ($message) {
                 $message->to('susanjacke.24@gmail.com')
                         ->subject('Prueba de Conexión Exitosa');
             });

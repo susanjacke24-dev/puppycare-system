@@ -1,10 +1,10 @@
-<# Medical Appointment App
+# PuppyCare
 
 ## Objetivo general
 
-Desarrollar un sistema web de citas médicas que permita la gestión de pacientes, médicos y citas, utilizando el framework Laravel como base del backend y aplicando buenas prácticas de desarrollo de software.
+Desarrollar un sistema web de citas para PuppyCare que permita la gestion de pacientes, doctores y citas, utilizando el framework Laravel como base del backend y aplicando buenas practicas de desarrollo de software.
 
-## Tecnologías utilizadas
+## Tecnologias utilizadas
 
 - PHP 8
 - Laravel 12
@@ -17,4 +17,4 @@ Desarrollar un sistema web de citas médicas que permita la gestión de paciente
 
 ## Estado del proyecto
 
-Proyecto en fase inicial de configuración del entorno de desarrollo.
+Proyecto en fase inicial de configuracion del entorno de desarrollo.

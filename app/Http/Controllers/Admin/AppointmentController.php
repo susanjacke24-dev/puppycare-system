@@ -37,6 +37,6 @@ class AppointmentController extends Controller
         $pdf = Pdf::loadView('pdf.appointment-voucher', compact('appointment'));
 
         // Retornar el archivo para descarga inmediata
-        return $pdf->download('Comprobante-Cita-' . $appointment->id . '.pdf');
+        return $pdf->download('Comprobante-Cita-Veterinaria-' . $appointment->id . '.pdf');
     }
 }

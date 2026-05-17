@@ -10,18 +10,18 @@ use Illuminate\Support\Carbon;
 
 class AppointmentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $patient = Patient::first() ?? Patient::create([
-            'user_id' => User::factory()->create(['name' => 'Paciente de Prueba'])->id,
+            'user_id' => User::factory()->create(['name' => 'Dueño de Prueba'])->id,
+            'pet_name' => 'Max',
+            'species' => 'Perro',
+            'breed' => 'Mestizo',
         ]);
 
-        $doctor = User::firstWhere('email', 'admin@test.com') ?? User::factory()->create(['name' => 'Dr. House', 'specialty' => 'Diagnóstico']);
+        $doctor = User::firstWhere('email', 'admin@test.com')
+            ?? User::factory()->create(['name' => 'Vet. House', 'specialty' => 'Medicina general']);
 
-        // Cita Completada (para el historial clínico)
         Appointment::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor->id,
@@ -29,16 +29,15 @@ class AppointmentSeeder extends Seeder
             'start_time' => '10:00:00',
             'end_time' => '10:30:00',
             'reason' => 'Chequeo rutinario anterior',
-            'status' => 2, // Atendida
-            'diagnosis' => 'Paciente con buena salud general, leve fatiga.',
-            'treatment' => 'Reposo y vitaminas.',
+            'status' => 2,
+            'diagnosis' => 'Mascota con buena salud general, leve fatiga.',
+            'treatment' => 'Reposo, hidratacion y vitaminas.',
             'notes' => 'Cita de prueba completada.',
             'medicines' => [
-                ['name' => 'Vitamina C', 'dosage' => '1g', 'frequency' => 'Cada 24 horas']
-            ]
+                ['name' => 'Multivitaminico veterinario', 'dosage' => '1 dosis', 'frequency' => 'Cada 24 horas'],
+            ],
         ]);
 
-        // Cita Pendiente (para hoy)
         Appointment::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor->id,
@@ -46,7 +45,7 @@ class AppointmentSeeder extends Seeder
             'start_time' => '09:00:00',
             'end_time' => '09:15:00',
             'reason' => 'Consulta de seguimiento hoy',
-            'status' => 1, // Pendiente
+            'status' => 1,
         ]);
     }
 }

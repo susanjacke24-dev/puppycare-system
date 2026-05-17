@@ -12,23 +12,25 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>Confirmación de Cita Médica</h2>
+            <h2>Confirmacion de Cita Veterinaria</h2>
         </div>
         <div class="content">
-            <p>Hola,</p>
-            <p>Se ha confirmado exitosamente una cita médica en <strong>Healthify</strong>.</p>
+            <p>Hola <strong>{{ $appointment->patient->owner_name }}</strong>,</p>
+            <p>Se ha confirmado exitosamente una cita veterinaria en <strong>PuppyCare</strong>.</p>
             <p><strong>Detalles de la cita:</strong></p>
             <ul>
-                <li><strong>Paciente:</strong> {{ $appointment->patient->user->name }}</li>
-                <li><strong>Doctor:</strong> {{ $appointment->doctor->name }}</li>
+                <li><strong>Mascota:</strong> {{ $appointment->patient->pet_display_name }}</li>
+                <li><strong>Especie / raza:</strong> {{ $appointment->patient->species ?? 'N/A' }} {{ $appointment->patient->breed ? '/ '.$appointment->patient->breed : '' }}</li>
+                <li><strong>Veterinario:</strong> {{ $appointment->doctor->name }}</li>
                 <li><strong>Fecha:</strong> {{ $appointment->date->format('d/m/Y') }}</li>
                 <li><strong>Hora:</strong> {{ $appointment->start_time }}</li>
+                <li><strong>Problema / motivo:</strong> {{ $appointment->reason }}</li>
             </ul>
-            <p>Adjunto a este correo encontrará el comprobante oficial en formato PDF.</p>
-            <p>Si tiene alguna duda, por favor contáctenos.</p>
+            <p>Adjunto a este correo encontrara el comprobante oficial en formato PDF.</p>
+            <p>Si tiene alguna duda, por favor contactenos.</p>
         </div>
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Healthify. Todos los derechos reservados.</p>
+            <p>&copy; {{ date('Y') }} PuppyCare. Todos los derechos reservados.</p>
         </div>
     </div>
 </body>

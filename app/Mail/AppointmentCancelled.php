@@ -29,6 +29,6 @@ class AppointmentCancelled extends Mailable
     public function build()
     {
         return $this->view('emails.appointment-cancelled')
-                    ->subject('Cita Médica Cancelada - ' . config('app.name'));
+                    ->subject('Cita Veterinaria Cancelada - ' . config('app.name'));
     }
 }

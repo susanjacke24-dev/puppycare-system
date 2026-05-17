@@ -29,21 +29,21 @@ $links = [
     ],
 
     [
-      'name' => 'Pacientes',
-      'icon' => 'fa-solid fa-user-injured',
+      'name' => 'Mascotas',
+      'icon' => 'fa-solid fa-paw',
       'href' => route('admin.patients.index'),
       'active' => request()->routeIs('admin.patients.*'),
     ],
 
     [
-      'name' => 'Doctores',
+      'name' => 'Veterinarios',
       'icon' => 'fa-solid fa-user-md',
       'href' => route('admin.doctors.index'),
       'active' => request()->routeIs('admin.doctors.*'),
     ],
 
     [
-      'name' => 'Citas médicas',
+      'name' => 'Citas veterinarias',
       'icon' => 'fa-solid fa-calendar-check',
       'href' => route('admin.appointments.index'),
       'active' => request()->routeIs('admin.appointments.*') || request()->routeIs('admin.consultations.*'),
@@ -64,7 +64,7 @@ $links = [
       <a href="/" class="flex items-center ps-2.5 mb-5">
          <img src="{{ asset('images/cat.jpg') }}" class="h-6 me-3" alt="Flowbite Logo" />
          <span class="self-center text-lg text-heading font-semibold whitespace-nowrap">
-            Healthify
+            PuppyCare
          </span>
       </a>
 

@@ -31,7 +31,7 @@ class AppointmentConfirmed extends Mailable
         $pdf = Pdf::loadView('pdf.appointment-voucher', ['appointment' => $this->appointment]);
 
         return $this->view('emails.appointment-confirmed')
-                    ->subject('Confirmación de Cita Médica - ' . config('app.name'))
+                    ->subject('Confirmacion de Cita Veterinaria - ' . config('app.name'))
                     ->attachData($pdf->output(), 'comprobante-cita.pdf', [
                         'mime' => 'application/pdf',
                     ]);

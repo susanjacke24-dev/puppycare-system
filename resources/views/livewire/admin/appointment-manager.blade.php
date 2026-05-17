@@ -40,12 +40,12 @@
                             </div>
                         </div>
 
-                        <!-- Card del Doctor -->
+                        <!-- Card del veterinario -->
                         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 shadow-sm p-6">
-                            <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Seleccionar Doctor</h3>
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Seleccionar veterinario</h3>
                             <div>
                                 <select wire:model.live="doctor_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option value="">Seleccione un doctor...</option>
+                                    <option value="">Seleccione un veterinario...</option>
                                     @foreach($doctors as $doctor)
                                         <option value="{{ $doctor->id }}">{{ $doctor->name }} ({{ $doctor->specialty ?? 'General' }})</option>
                                     @endforeach
@@ -85,7 +85,7 @@
                             
                             <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300 flex-grow">
                                 <div class="flex justify-between border-b border-gray-200 pb-2">
-                                    <span class="font-medium text-gray-500">Doctor:</span>
+                                    <span class="font-medium text-gray-500">Veterinario:</span>
                                     <span class="font-semibold text-gray-900 text-right">{{ $doctor_id ? ($doctors->find($doctor_id)->name ?? '') : '-' }}</span>
                                 </div>
                                 <div class="flex justify-between border-b border-gray-200 pb-2">
@@ -105,11 +105,11 @@
                                 </div>
 
                                 <div class="pt-4">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900">Paciente</label>
+                                    <label class="block mb-2 text-sm font-medium text-gray-900">Mascota</label>
                                     <select wire:model.live="patient_id" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                        <option value="">Seleccione un paciente...</option>
+                                        <option value="">Seleccione una mascota...</option>
                                         @foreach($patients as $patient)
-                                            <option value="{{ $patient->id }}">{{ $patient->user->name ?? 'Sin nombre' }}</option>
+                                            <option value="{{ $patient->id }}">{{ $patient->pet_display_name }} - Dueño: {{ $patient->owner_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('patient_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror

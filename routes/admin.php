@@ -21,7 +21,7 @@ Route::middleware([
     // Gestión de usuarios (en plural por convención)
     Route::resource('users', UserController::class);
 
-    // Gestión de pacientes
+    // Gestion de mascotas
     Route::resource('patients', PatientController::class);
 });
 

@@ -13,23 +13,27 @@
 </head>
 <body>
     <div class="header">
-        <h1>Comprobante de Cita Médica</h1>
-        <p>Healthify - Sistema de Gestión Médica</p>
+        <h1>Comprobante de Cita Veterinaria</h1>
+        <p>PuppyCare - Sistema de Gestion Veterinaria</p>
     </div>
 
     <div class="content">
         <p>Se ha agendado una nueva cita con los siguientes detalles:</p>
         <table>
             <tr>
-                <th>Paciente</th>
-                <td>{{ $appointment->patient->user->name }}</td>
+                <th>Mascota</th>
+                <td>{{ $appointment->patient->pet_display_name }}</td>
             </tr>
             <tr>
-                <th>DNI Paciente</th>
-                <td>{{ $appointment->patient->user->id_number }}</td>
+                <th>Especie / Raza</th>
+                <td>{{ $appointment->patient->species ?? 'N/A' }} {{ $appointment->patient->breed ? '/ '.$appointment->patient->breed : '' }}</td>
             </tr>
             <tr>
-                <th>Médico</th>
+                <th>Dueño</th>
+                <td>{{ $appointment->patient->owner_name }}</td>
+            </tr>
+            <tr>
+                <th>Veterinario</th>
                 <td>{{ $appointment->doctor->name }} ({{ $appointment->doctor->specialty }})</td>
             </tr>
             <tr>
@@ -41,14 +45,14 @@
                 <td>{{ $appointment->start_time }}</td>
             </tr>
             <tr>
-                <th>Motivo</th>
+                <th>Problema / motivo</th>
                 <td>{{ $appointment->reason }}</td>
             </tr>
         </table>
     </div>
 
     <div class="footer">
-        <p>Este es un comprobante automático generado por Healthify.</p>
+        <p>Este es un comprobante automatico generado por PuppyCare.</p>
         <p>Por favor, llegue 15 minutos antes de su cita.</p>
     </div>
 </body>

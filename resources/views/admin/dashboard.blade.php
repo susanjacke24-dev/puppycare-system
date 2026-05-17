@@ -8,5 +8,5 @@ title="Dashboard" :breadcrumbs=" [
     'name' => 'Ejemplo',
   ]
 ]">
-  Hola desde el panel de control del sistema de citas médicas
+  Hola desde el panel de control del sistema de citas veterinarias
 </x-admin-layout>

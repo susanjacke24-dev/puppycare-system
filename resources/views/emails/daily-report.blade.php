@@ -13,35 +13,37 @@
 </head>
 <body>
     <div class="header">
-        <h2>{{ $type === 'admin' ? 'Resumen General de Citas' : 'Tu Agenda para Hoy' }}</h2>
+        <h2>{{ $type === 'admin' ? 'Resumen General de Citas Veterinarias' : 'Tu Agenda para Hoy' }}</h2>
         <p>{{ now()->format('l, d \d\e F \d\e Y') }}</p>
     </div>
 
     <div class="content">
         @if($type === 'doctor')
-            <p>Hola Dr. <strong>{{ $doctor->name }}</strong>,</p>
-            <p>A continuación se detalla la lista de pacientes agendados para su consulta el día de hoy:</p>
+            <p>Hola <strong>{{ $doctor->name }}</strong>,</p>
+            <p>A continuacion se detalla la lista de mascotas agendadas para consulta el dia de hoy:</p>
         @else
             <p>Estimado Administrador,</p>
-            <p>Este es el reporte consolidado de todas las citas médicas programadas para el día de hoy:</p>
+            <p>Este es el reporte consolidado de todas las citas veterinarias programadas para el dia de hoy:</p>
         @endif
 
         <table>
             <thead>
                 <tr>
                     <th>Hora</th>
-                    <th>Paciente</th>
+                    <th>Mascota</th>
+                    <th>Dueño</th>
                     @if($type === 'admin')
-                        <th>Doctor</th>
+                        <th>Veterinario</th>
                     @endif
-                    <th>Motivo</th>
+                    <th>Problema / motivo</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($appointments as $app)
                     <tr>
                         <td>{{ $app->start_time }}</td>
-                        <td>{{ $app->patient->user->name }}</td>
+                        <td>{{ $app->patient->pet_display_name }}</td>
+                        <td>{{ $app->patient->owner_name }}</td>
                         @if($type === 'admin')
                             <td>{{ $app->doctor->name }}</td>
                         @endif
@@ -53,7 +55,7 @@
     </div>
 
     <div class="footer">
-        <p>Este es un reporte automático generado por el sistema Healthify a las 08:00 AM.</p>
+        <p>Este es un reporte automatico generado por el sistema PuppyCare a las 08:00 AM.</p>
     </div>
 </body>
 </html>

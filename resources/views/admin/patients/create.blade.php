@@ -1,6 +1,6 @@
-<x-admin-layout title="Pacientes" :breadcrumbs="[
+<x-admin-layout title="Mascotas" :breadcrumbs="[
     ['name' => 'Dashboard', 'href' => route('admin.dashboard')],
-    ['name' => 'Pacientes', 'href' => route('admin.patients.index')],
+    ['name' => 'Mascotas', 'href' => route('admin.patients.index')],
     ['name' => 'Crear'],
 ]">
     
