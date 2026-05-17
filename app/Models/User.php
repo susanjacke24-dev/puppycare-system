@@ -72,8 +72,14 @@ class User extends Authenticatable
 
     //Relación uno a uno 
 
-    public function patient(){
+    public function patient()
+    {
         return $this->hasOne(Patient::class);
+    }
+
+    public function patients()
+    {
+        return $this->hasMany(Patient::class);
     }
 
     /**

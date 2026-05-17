@@ -37,7 +37,7 @@
                     <th scope="col" class="px-6 py-3 font-semibold">ID profesional</th>
                     <th scope="col" class="px-6 py-3 font-semibold">Teléfono</th>
                     <th scope="col" class="px-6 py-3 font-semibold">Especialidad</th>
-                    <th scope="col" class="px-6 py-3 font-semibold text-center">Acciones</th>
+                    <th scope="col" class="px-6 py-3 font-semibold text-center" style="position: sticky; right: 0; z-index: 10; background: inherit;">Acciones</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -52,16 +52,24 @@
                                 {{ $doctor->specialty ?? 'General' }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-center">
-                            <div class="flex justify-center space-x-2">
-                                <button wire:click="edit({{ $doctor->id }})" class="w-8 h-8 rounded bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center transition" title="Editar">
-                                    <i class="fas fa-edit"></i>
+                        <td class="px-6 py-4 text-center whitespace-nowrap" style="position: sticky; right: 0; z-index: 5; background: inherit; min-width: 240px;">
+                            <div style="display: flex; justify-content: center; gap: 8px;">
+                                <button type="button" wire:click="edit({{ $doctor->id }})" title="Editar veterinario" aria-label="Editar veterinario" style="display: inline-flex; align-items: center; gap: 6px; min-width: 86px; padding: 8px 12px; border: 0; border-radius: 8px; background: #2563eb; color: #ffffff; font-size: 12px; font-weight: 700; cursor: pointer;">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width: 16px; height: 16px; flex-shrink: 0;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.125 16.875 4.5M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    </svg>
+                                    Editar
                                 </button>
-                                <a href="{{ route('admin.doctors.schedule', $doctor->id) }}" class="w-8 h-8 rounded bg-green-500 hover:bg-green-600 text-white flex items-center justify-center transition" title="Horarios">
-                                    <i class="fas fa-clock"></i>
+                                <a href="{{ route('admin.doctors.schedule', $doctor->id) }}" title="Gestionar horario" aria-label="Gestionar horario" style="display: inline-flex; align-items: center; gap: 6px; min-width: 94px; padding: 8px 12px; border-radius: 8px; background: #16a34a; color: #ffffff; font-size: 12px; font-weight: 700; text-decoration: none;">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width: 16px; height: 16px; flex-shrink: 0;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25m10.5-2.25v2.25M3.75 8.25h16.5M5.25 5.25h13.5A1.5 1.5 0 0 1 20.25 6.75v12A1.5 1.5 0 0 1 18.75 20.25H5.25A1.5 1.5 0 0 1 3.75 18.75v-12A1.5 1.5 0 0 1 5.25 5.25Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 12h3.75l-2.25 3.75h4.5" />
+                                    </svg>
+                                    Horario
                                 </a>
-                                <button onclick="confirmDelete({{ $doctor->id }})" class="w-8 h-8 rounded bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition" title="Eliminar">
-                                    <i class="fas fa-trash"></i>
+                                <button type="button" onclick="confirmDelete({{ $doctor->id }})" title="Eliminar veterinario" aria-label="Eliminar veterinario" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; padding: 8px; border: 0; border-radius: 8px; background: #dc2626; color: #ffffff; cursor: pointer;">
+                                    <i class="fa-solid fa-trash text-sm"></i>
                                 </button>
                             </div>
                         </td>

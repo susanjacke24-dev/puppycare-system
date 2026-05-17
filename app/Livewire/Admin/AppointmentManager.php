@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\User;
+use App\Services\AppointmentScheduleValidator;
 use Livewire\Component;
 
 class AppointmentManager extends Component
 {
     public $isCreating = false;
-    
+
     public $patient_id;
     public $doctor_id;
     public $date;
@@ -22,7 +26,7 @@ class AppointmentManager extends Component
             'doctor_id' => 'required|exists:users,id',
             'date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'end_time' => 'required|date_format:H:i',
             'reason' => 'nullable|string',
         ];
     }
@@ -42,26 +46,41 @@ class AppointmentManager extends Component
     {
         $this->validate();
 
-        \App\Models\Appointment::create([
+        $scheduleValidation = AppointmentScheduleValidator::validate(
+            (int) $this->doctor_id,
+            $this->date,
+            $this->start_time,
+            $this->end_time
+        );
+
+        if (!$scheduleValidation['valid']) {
+            $this->addError($scheduleValidation['field'], $scheduleValidation['message']);
+            return;
+        }
+
+        Appointment::create([
             'patient_id' => $this->patient_id,
             'doctor_id' => $this->doctor_id,
             'date' => $this->date,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
+            'start_time' => $scheduleValidation['start_time'],
+            'end_time' => $scheduleValidation['end_time'],
             'duration' => 15,
             'reason' => $this->reason,
             'status' => 1,
         ]);
 
         $this->isCreating = false;
-        session()->flash('message', 'Cita registrada con éxito.');
+        session()->flash('message', 'Cita registrada con exito.');
     }
 
     public function render()
     {
-        $appointments = \App\Models\Appointment::with(['patient.user', 'doctor'])->orderBy('date', 'desc')->orderBy('start_time', 'desc')->get();
-        $patients = \App\Models\Patient::with('user')->get();
-        $doctors = \App\Models\User::role('Doctor')->get();
+        $appointments = Appointment::with(['patient.user', 'doctor'])
+            ->orderBy('date', 'desc')
+            ->orderBy('start_time', 'desc')
+            ->get();
+        $patients = Patient::with('user')->get();
+        $doctors = User::role('Doctor')->get();
 
         return view('livewire.admin.appointment-manager', [
             'appointments' => $appointments,

@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Admin;
 
-use Livewire\Component;
-use App\Models\User;
 use App\Models\DoctorSchedule;
+use App\Models\User;
+use App\Services\AppointmentScheduleValidator;
+use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
 class DoctorScheduleManager extends Component
@@ -12,11 +13,9 @@ class DoctorScheduleManager extends Component
     use WireUiActions;
 
     public $doctor;
-    public $schedules = []; // Array of ranges per day
+    public $schedules = [];
+    public $days = [];
 
-    public $days = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO', 'DOMINGO'];
-
-    // Temp fields for new range
     public $new_day = 'LUNES';
     public $new_start = '08:00';
     public $new_end = '14:00';
@@ -24,6 +23,7 @@ class DoctorScheduleManager extends Component
     public function mount(User $doctor)
     {
         $this->doctor = $doctor;
+        $this->days = AppointmentScheduleValidator::weekDays();
         $this->loadSchedules();
     }
 
@@ -40,6 +40,7 @@ class DoctorScheduleManager extends Component
     public function addRange()
     {
         $this->validate([
+            'new_day' => 'required|in:' . implode(',', AppointmentScheduleValidator::weekDays()),
             'new_start' => 'required',
             'new_end' => 'required|after:new_start',
         ]);
@@ -52,12 +53,12 @@ class DoctorScheduleManager extends Component
         ]);
 
         $this->loadSchedules();
-        $this->notification()->success('Rango añadido', 'Jornada laboral registrada correctamente.');
+        $this->notification()->success('Rango anadido', 'Jornada laboral registrada correctamente.');
     }
 
     public function removeRange($id)
     {
-        DoctorSchedule::find($id)->delete();
+        DoctorSchedule::find($id)?->delete();
         $this->loadSchedules();
         $this->notification()->info('Rango eliminado', 'El turno ha sido removido.');
     }

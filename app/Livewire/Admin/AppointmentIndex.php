@@ -2,14 +2,15 @@
 
 namespace App\Livewire\Admin;
 
-use Livewire\Component;
+use App\Mail\AppointmentCancelled;
 use App\Models\Appointment;
+use App\Services\AppointmentScheduleValidator;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\WireUiActions;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\AppointmentCancelled;
-use Illuminate\Support\Facades\Artisan;
 
 class AppointmentIndex extends Component
 {
@@ -19,7 +20,6 @@ class AppointmentIndex extends Component
     public $search = '';
     public $isOpen = false;
 
-    // Form fields for editing
     public $appointmentId;
     public $patient_id;
     public $doctor_id;
@@ -52,43 +52,17 @@ class AppointmentIndex extends Component
             'end_time' => 'required',
         ]);
 
-        $start = Carbon::parse($this->start_time);
-        $end = Carbon::parse($this->end_time);
-        $this_start_str = $start->format('H:i:s');
-        $this_end_str = $end->format('H:i:s');
+        $scheduleValidation = AppointmentScheduleValidator::validate(
+            (int) $this->doctor_id,
+            $this->date,
+            $this->start_time,
+            $this->end_time,
+            (int) $this->appointmentId
+        );
 
-        // 1. Validar Duración
-        if ($start->diffInMinutes($end) > 60) {
-            $this->notification()->error('Error', 'La cita no puede durar más de una hora.');
-            return;
-        }
-
-        // 2. Validar Horario Laboral
-        $dayName = $this->getSpanishDayName($start->dayOfWeek);
-        $isWithinSchedule = \App\Models\DoctorSchedule::where('doctor_id', $this->doctor_id)
-            ->where('day_of_week', $dayName)
-            ->where('start_time', '<=', $this_start_str)
-            ->where('end_time', '>=', $this_end_str)
-            ->exists();
-
-        if (!$isWithinSchedule) {
-            $this->notification()->error('Fuera de Horario', 'El veterinario no labora en este horario.');
-            return;
-        }
-
-        // 3. Validar Traslape (Excluyendo la cita actual)
-        $overlap = Appointment::where('doctor_id', $this->doctor_id)
-            ->where('date', $this->date)
-            ->where('id', '!=', $this->appointmentId)
-            ->where(function ($query) use ($this_start_str, $this_end_str) {
-                $query->where('start_time', '<', $this_end_str)
-                      ->where('end_time', '>', $this_start_str);
-            })
-            ->where('status', '!=', 3)
-            ->exists();
-
-        if ($overlap) {
-            $this->notification()->warning('Ocupado', 'Ya existe otra cita en este horario.');
+        if (!$scheduleValidation['valid']) {
+            $this->notification()->error($scheduleValidation['title'], $scheduleValidation['message']);
+            $this->addError($scheduleValidation['field'], $scheduleValidation['message']);
             return;
         }
 
@@ -97,8 +71,8 @@ class AppointmentIndex extends Component
             'patient_id' => $this->patient_id,
             'doctor_id' => $this->doctor_id,
             'date' => $this->date,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
+            'start_time' => $scheduleValidation['start_time'],
+            'end_time' => $scheduleValidation['end_time'],
             'reason' => $this->reason,
         ]);
 
@@ -109,17 +83,11 @@ class AppointmentIndex extends Component
     public function sendManualReport()
     {
         Artisan::call('puppycare:automate');
-        
+
         $this->notification()->success(
             $title = 'Reporte Solicitado',
-            $description = 'Se han procesado los reportes y recordatorios según las citas de hoy.'
+            $description = 'Se han procesado los reportes y recordatorios segun las citas de hoy.'
         );
-    }
-
-    private function getSpanishDayName($dayNumber)
-    {
-        $days = [0 => 'DOMINGO', 1 => 'LUNES', 2 => 'MARTES', 3 => 'MIÉRCOLES', 4 => 'JUEVES', 5 => 'VIERNES', 6 => 'SÁBADO'];
-        return $days[$dayNumber] ?? 'LUNES';
     }
 
     public function delete($id, $reason = 'No especificado')
@@ -127,11 +95,10 @@ class AppointmentIndex extends Component
         $appointment = Appointment::with(['patient.user', 'doctor'])->findOrFail($id);
 
         try {
-            // Enviamos el correo de cancelación ANTES de borrar el registro
             Mail::to($appointment->patient->user->email)->send(new AppointmentCancelled($appointment, $reason));
             Mail::to($appointment->doctor->email)->send(new AppointmentCancelled($appointment, $reason));
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Error enviando correo de cancelación: " . $e->getMessage());
+            Log::error('Error enviando correo de cancelacion: ' . $e->getMessage());
         }
 
         $appointment->delete();
@@ -145,8 +112,8 @@ class AppointmentIndex extends Component
     public function render()
     {
         $appointments = Appointment::with(['patient.user', 'doctor'])
-            ->where(function($query) {
-                $query->whereHas('patient', function($q) {
+            ->where(function ($query) {
+                $query->whereHas('patient', function ($q) {
                     $q->where('pet_name', 'like', '%' . $this->search . '%')
                         ->orWhere('species', 'like', '%' . $this->search . '%')
                         ->orWhere('breed', 'like', '%' . $this->search . '%')
@@ -154,7 +121,7 @@ class AppointmentIndex extends Component
                             $ownerQuery->where('name', 'like', '%' . $this->search . '%');
                         });
                 })
-                ->orWhereHas('doctor', function($q) {
+                ->orWhereHas('doctor', function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%');
                 });
             })
