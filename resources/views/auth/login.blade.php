@@ -329,7 +329,7 @@
     <div class="pc-login-page">
         <div class="pc-login-grid">
             <section class="pc-hero">
-                
+                <img src="{{ asset('images/logoveterinaria.jpg') }}" alt="PuppyCare" class="pc-hero-image">
                 <div class="pc-hero-overlay"></div>
 
                 <div class="pc-hero-content">

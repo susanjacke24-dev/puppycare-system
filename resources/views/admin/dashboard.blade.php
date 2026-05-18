@@ -1,12 +1,15 @@
 <x-admin-layout 
-title="Dashboard" :breadcrumbs=" [
+title="Sobre Nosotros" :breadcrumbs=" [
   [
-    'name' => 'Dashboard',
+    'name' => 'Sobre Nosotros',
     'href' => route('admin.dashboard'),
   ],
   [
-    'name' => 'Ejemplo',
+    'name' => 'PuppyCare',
   ]
 ]">
-  Hola desde el panel de control del sistema de citas veterinarias
+  En PuppyCare nos dedicamos a brindar una gestión eficiente y moderna para clínicas veterinarias, facilitando el control de citas, pacientes,
+  historiales médicos y atención especializada para mascotas.
+
+  Nuestro objetivo es mejorar la organización y optimizar la atención veterinaria mediante herramientas digitales intuitivas, seguras y accesibles.
 </x-admin-layout>

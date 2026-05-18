@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 $links = [
 
     [
-        'name' => 'Dashboard',
+        'name' => 'Sobre Nosotros',
         'icon' => 'fa-solid fa-gauge',
         'href' => route('admin.dashboard'),
         'active' => request()->routeIs('admin.dashboard'),
@@ -62,7 +62,7 @@ $links = [
 
       <!-- LOGO (TU VERSIÓN ORIGINAL, SIN CAMBIOS) -->
       <a href="/" class="flex items-center ps-2.5 mb-5">
-         <img src="{{ asset('images/cat.jpg') }}" class="h-6 me-3" alt="Flowbite Logo" />
+         <img src="{{ asset('images/logoveterinaria.jpg') }}" class="h-6 me-3" alt="Flowbite Logo" />
          <span class="self-center text-lg text-heading font-semibold whitespace-nowrap">
             PuppyCare
          </span>

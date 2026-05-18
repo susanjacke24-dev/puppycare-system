@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\RoleController; 
+use App\Http\Controllers\Admin\RoleController;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (request()->user()) {
+        return redirect()->route('admin.appointments.index');
+    }
+    return redirect()->route('login');
 });
 
 Route::middleware([
@@ -14,7 +17,7 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return redirect()->route('admin.appointments.index');
     })->name('dashboard');
 
     // RUTAS DE ROLES

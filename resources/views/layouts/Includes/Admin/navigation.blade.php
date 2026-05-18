@@ -9,7 +9,7 @@
    </svg>
          </button>
         <a href="/" class="flex ms-2 md:me-24">
-          <img src="{{asset('images/cat.jpg' )}}" class="h-6 me-3" alt="FlowBite Logo" />
+          <img src="{{asset('images/logoveterinaria.jpg' )}}" class="h-6 me-3" alt="FlowBite Logo" />
           <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white"></span>
         </a>
       </div>
