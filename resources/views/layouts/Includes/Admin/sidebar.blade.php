@@ -134,12 +134,11 @@ $links = [
    class="flex items-center w-full px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group
    {{ $link['active'] ? 'bg-gray-100 font-semibold' : '' }}">
 
-    <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 shadow-sm transition-all duration-200 group-hover:scale-105">
+    <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:-translate-y-0.5">
 
     <i class="{{ $link['icon'] }} text-sm"></i>
 
     </span>
-
     <span class="ms-3 whitespace-nowrap">
         {{ $link['name'] }}
     </span>

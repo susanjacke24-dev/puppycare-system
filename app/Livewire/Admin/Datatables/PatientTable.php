@@ -24,9 +24,9 @@ class PatientTable extends DataTableComponent
         return [
             Column::make('Id', 'id')->sortable(),
             Column::make('Mascota', 'pet_name')
-                ->label(fn ($row) => $row->pet_display_name)
-                ->sortable()
-                ->searchable(),
+            ->format(fn ($value) => $value ?: 'Mascota sin nombre')
+            ->sortable()
+            ->searchable(),
             Column::make('Especie', 'species')->sortable()->searchable(),
             Column::make('Raza', 'breed')->sortable()->searchable(),
             Column::make('Dueño', 'user.name')->sortable()->searchable(),
