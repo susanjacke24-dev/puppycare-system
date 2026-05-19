@@ -41,8 +41,18 @@ class PatientController extends Controller
 
         if (!$owner->hasRole('Paciente')) {
             return back()
-                ->withErrors(['user_id' => 'El dueño seleccionado debe estar registrado como usuario con rol Dueño.'])
+                ->withErrors([
+                    'user_id' => 'El dueño seleccionado debe estar registrado como usuario con rol Dueño.'
+                ])
                 ->withInput();
+        }
+
+        // GUARDAR FOTO DE MASCOTA
+        if ($request->hasFile('photo')) {
+
+            $path = $request->file('photo')->store('patients', 'public');
+
+            $data['photo'] = $path;
         }
 
         $patient = Patient::create($data);
@@ -70,6 +80,7 @@ class PatientController extends Controller
     public function edit(Patient $patient)
     {
         $bloodTypes = BloodType::all();
+
         return view('admin.patients.edit', compact('patient', 'bloodTypes'));
     }
 
@@ -78,19 +89,27 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
-     $data = $this->validatePatient($request);
+        $data = $this->validatePatient($request);
 
-     $patient->update($data);
+        // GUARDAR FOTO DE MASCOTA
+        if ($request->hasFile('photo')) {
 
-     session()->flash('swal', [
-        'icon' => 'success',
-        'title' => 'Mascota actualizada',
-        'text' => 'El expediente de la mascota ha sido actualizado exitosamente'
-     ]);
+            $path = $request->file('photo')->store('patients', 'public');
 
-     return redirect()
-        ->route('admin.patients.edit', $patient)
-        ->with('success', 'Mascota actualizada correctamente');
+            $data['photo'] = $path;
+        }
+
+        $patient->update($data);
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => 'Mascota actualizada',
+            'text' => 'El expediente de la mascota ha sido actualizado exitosamente'
+        ]);
+
+        return redirect()
+            ->route('admin.patients.edit', $patient)
+            ->with('success', 'Mascota actualizada correctamente');
     }
 
     /**
@@ -104,24 +123,48 @@ class PatientController extends Controller
     private function validatePatient(Request $request, bool $creating = false): array
     {
         return $request->validate([
+
             'user_id' => [
                 $creating ? 'required' : 'sometimes',
                 Rule::exists('users', 'id'),
             ],
+
             'pet_name' => 'required|string|min:2|max:255',
+
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+
             'species' => 'required|string|min:2|max:100',
+
             'breed' => 'nullable|string|min:2|max:100',
+
             'sex' => 'nullable|string|max:30',
+
             'birth_date' => 'nullable|date|before_or_equal:today',
+
             'blood_type_id' => 'nullable|exists:blood_types,id',
+
             'allergies' => 'nullable|string|min:3|max:255',
+
             'chronic_conditions' => 'nullable|string|min:3|max:255',
+
             'surgical_history' => 'nullable|string|min:3|max:255',
+
             'family_history' => 'nullable|string|min:3|max:255',
+
             'observations' => 'nullable|string|min:3|max:255',
+
             'emergency_contact_name' => 'nullable|string|min:3|max:255',
-            'emergency_contact_phone' => ['nullable', 'string', 'max:20', 'min:10', 'regex:/^[0-9()\s-]+$/'],
+
+            'emergency_contact_phone' => [
+                'nullable',
+                'string',
+                'max:20',
+                'min:10',
+                'regex:/^[0-9()\s-]+$/'
+            ],
+
             'emergency_contact_relationship' => 'nullable|string|min:3|max:50',
+
         ]);
     }
 }

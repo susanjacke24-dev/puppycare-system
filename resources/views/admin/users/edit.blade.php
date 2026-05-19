@@ -1,6 +1,6 @@
 <x-admin-layout title="Usuarios" :breadcrumbs="[
-    ['name' => 'Dashboard', 'href' => route('admin.dashboard')],
-    ['name' => 'Usuarios', 'href' => route('admin.users.index')],
+    ['name' => 'Módulo Principal', 'href' => route('admin.dashboard')],
+    ['name' => 'Gestión deUsuarios', 'href' => route('admin.users.index')],
     ['name' => 'Crear'],
 ]">
     <x-wire-card>
