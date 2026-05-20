@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Appointment;
 use App\Models\DoctorSchedule;
 use App\Models\User;
 use App\Services\AppointmentScheduleValidator;
@@ -15,6 +16,7 @@ class DoctorScheduleManager extends Component
     public $doctor;
     public $schedules = [];
     public $days = [];
+    public $appointments = [];
 
     public $new_day = 'LUNES';
     public $new_start = '08:00';
@@ -23,8 +25,12 @@ class DoctorScheduleManager extends Component
     public function mount(User $doctor)
     {
         $this->doctor = $doctor;
+
         $this->days = AppointmentScheduleValidator::weekDays();
+
         $this->loadSchedules();
+
+        $this->loadAppointments();
     }
 
     public function loadSchedules()
@@ -35,6 +41,15 @@ class DoctorScheduleManager extends Component
             ->get()
             ->groupBy('day_of_week')
             ->toArray();
+    }
+
+    public function loadAppointments()
+    {
+        $this->appointments = Appointment::where('doctor_id', $this->doctor->id)
+            ->with(['patient.user'])
+            ->orderBy('date')
+            ->orderBy('start_time')
+            ->get();
     }
 
     public function addRange()
@@ -53,18 +68,28 @@ class DoctorScheduleManager extends Component
         ]);
 
         $this->loadSchedules();
-        $this->notification()->success('Rango anadido', 'Jornada laboral registrada correctamente.');
+
+        $this->notification()->success(
+            'Rango añadido',
+            'Jornada laboral registrada correctamente.'
+        );
     }
 
     public function removeRange($id)
     {
         DoctorSchedule::find($id)?->delete();
+
         $this->loadSchedules();
-        $this->notification()->info('Rango eliminado', 'El turno ha sido removido.');
+
+        $this->notification()->info(
+            'Rango eliminado',
+            'El turno ha sido removido.'
+        );
     }
 
     public function render()
     {
-        return view('livewire.admin.doctor-schedule-manager')->layout('layouts.admin');
+        return view('livewire.admin.doctor-schedule-manager')
+            ->layout('layouts.admin');
     }
 }

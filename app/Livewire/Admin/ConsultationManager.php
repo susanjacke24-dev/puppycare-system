@@ -3,30 +3,35 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Appointment;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VeterinaryPrescriptionMail;
 use Livewire\Component;
 
 class ConsultationManager extends Component
 {
     public Appointment $appointment;
-    
+
     // Consulta fields
     public $diagnosis;
     public $treatment;
     public $notes;
-    
+
     // Receta fields (JSON)
     public $medicines = [];
-    
+
     // History Modal
     public $pastAppointments = [];
 
     public function mount(Appointment $appointment)
     {
         $this->appointment = $appointment->load(['patient.user', 'doctor']);
+
         $this->diagnosis = $appointment->diagnosis;
         $this->treatment = $appointment->treatment;
         $this->notes = $appointment->notes;
-        
+
         // Initialize medicines from DB or empty array
         $this->medicines = $appointment->medicines ?? [];
     }
@@ -49,6 +54,7 @@ class ConsultationManager extends Component
     public function removeMedicine($index)
     {
         unset($this->medicines[$index]);
+
         $this->medicines = array_values($this->medicines);
     }
 
@@ -74,29 +80,66 @@ class ConsultationManager extends Component
             'diagnosis' => 'required|string|min:5',
             'treatment' => 'required|string|min:5',
             'notes' => 'nullable|string',
+
             'medicines.*.name' => 'required|string',
             'medicines.*.dosage' => 'required|string',
             'medicines.*.frequency' => 'required|string',
+
         ], [
             'diagnosis.required' => 'El diagnóstico es obligatorio.',
             'treatment.required' => 'El tratamiento es obligatorio.',
+
             'medicines.*.name.required' => 'El nombre es obligatorio.',
             'medicines.*.dosage.required' => 'La dosis es obligatoria.',
             'medicines.*.frequency.required' => 'La frecuencia es obligatoria.',
         ]);
 
+        // Guardar consulta
         $this->appointment->update([
             'diagnosis' => $this->diagnosis,
             'treatment' => $this->treatment,
             'notes' => $this->notes,
             'medicines' => $this->medicines,
-            'status' => 2, // 2 = Completado
+            'status' => 2, // Completado
         ]);
+
+        // Recargar relaciones
+        $appointment = $this->appointment->fresh([
+            'patient.user',
+            'doctor'
+        ]);
+
+        // Generar PDF
+        $pdf = Pdf::loadView(
+            'pdf.veterinary-prescription',
+            compact('appointment')
+        );
+
+        // Nombre archivo
+        $fileName = 'receta-veterinaria-' . $appointment->id . '.pdf';
+
+        // Guardar PDF
+        Storage::disk('public')->put(
+            'prescriptions/' . $fileName,
+            $pdf->output()
+        );
+
+        // Ruta PDF
+        $pdfPath = 'prescriptions/' . $fileName;
+
+         // Enviar correo al dueño
+          Mail::to($appointment->patient->user->email)
+           ->send(
+           new VeterinaryPrescriptionMail(
+            $appointment,
+            $pdfPath
+         )
+        );
 
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Consulta Finalizada!',
-            'text' => 'La cita ha sido marcada como completada.',
+            'text' => 'La consulta y receta veterinaria fueron generadas correctamente.',
         ]);
 
         return redirect()->route('admin.appointments.index');
@@ -106,7 +149,8 @@ class ConsultationManager extends Component
     {
         return view('livewire.admin.consultation-manager')
             ->layout('layouts.admin', [
-                'title' => 'Consulta veterinaria - ' . ($this->appointment->patient->pet_display_name ?? 'Mascota')
+                'title' => 'Consulta veterinaria - ' .
+                    ($this->appointment->patient->pet_display_name ?? 'Mascota')
             ]);
     }
 }

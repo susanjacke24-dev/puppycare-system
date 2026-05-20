@@ -60,14 +60,7 @@
                     </x-wire-native-select>
                     <x-wire-input label="Fecha de nacimiento aproximada" name="birth_date" type="date" value="{{ old('birth_date') }}" />
 
-                    <x-wire-native-select label="Tipo de sangre de la mascota" name="blood_type_id">
-                        <option value="">Selecciona...</option>
-                        @foreach ($bloodTypes as $bloodType)
-                            <option value="{{ $bloodType->id }}" @selected(old('blood_type_id') == $bloodType->id)>
-                                {{ $bloodType->name }}
-                            </option>
-                        @endforeach
-                    </x-wire-native-select>
+                    
 
                     <x-wire-textarea label="Alergias conocidas" name="allergies">{{ old('allergies') }}</x-wire-textarea>
                     <x-wire-textarea label="Condiciones cronicas o recurrentes" name="chronic_conditions">{{ old('chronic_conditions') }}</x-wire-textarea>

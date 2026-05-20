@@ -91,4 +91,127 @@
             </div>
         </div>
     </div>
+    <!-- Agenda Veterinaria -->
+<div class="mt-8 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+
+    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700">
+
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+
+            <i class="fas fa-calendar-alt mr-2 text-cyan-600"></i>
+
+            Agenda veterinaria
+
+        </h3>
+
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Citas registradas para este veterinario.
+        </p>
+
+    </div>
+
+    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+
+        @forelse($appointments as $appointment)
+
+            <div class="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+
+                <div>
+
+                    <p class="font-bold text-gray-900 dark:text-white">
+
+                        {{ \Carbon\Carbon::parse($appointment->date)->format('d/m/Y') }}
+
+                    </p>
+
+                    <p class="text-cyan-700 dark:text-cyan-400 font-medium">
+
+                        {{ \Carbon\Carbon::parse($appointment->start_time)->format('h:i A') }}
+
+                    </p>
+
+                </div>
+
+                <div class="flex-1">
+
+                    <p class="font-semibold text-gray-800 dark:text-white">
+
+                        {{ $appointment->patient->pet_name ?? 'Mascota sin nombre' }}
+
+                    </p>
+
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+
+                        Propietario:
+                        {{ $appointment->patient->user->name ?? 'No registrado' }}
+
+                    </p>
+
+                </div>
+
+                <div>
+
+    @if($appointment->status == 0)
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
+
+            Pendiente
+
+        </span>
+
+    @elseif($appointment->status == 1)
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+
+            Confirmada
+
+        </span>
+
+    @elseif($appointment->status == 2)
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
+
+            Completada
+
+        </span>
+
+    @elseif($appointment->status == 3)
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300">
+
+            Cancelada
+
+        </span>
+
+    @else
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+
+            Desconocido
+
+        </span>
+
+    @endif
+
+</div>
+
+            </div>
+
+        @empty
+
+            <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+
+                <i class="fas fa-calendar-times text-3xl mb-3 opacity-50"></i>
+
+                <p>
+                    No hay citas registradas para este veterinario.
+                </p>
+
+            </div>
+
+        @endforelse
+
+    </div>
+
+</div>
 </div>
