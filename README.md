@@ -184,5 +184,8 @@ Proyecto académico funcional en desarrollo continuo.
 ---
 
 # Autor
+# Diagrama Entidad-Relación (DER)
+
+[Ver DER en PDF](docs/DER-PuppyCare.pdf)
 
 Susan Jackeline y colaboradores académicos.
