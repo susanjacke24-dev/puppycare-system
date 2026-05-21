@@ -1,185 +1,89 @@
 # PuppyCare
 
-PuppyCare es una plataforma web moderna para la gestión integral de clínicas veterinarias desarrollada con Laravel, Livewire y TailwindCSS.
-
-El sistema permite administrar:
-
-* usuarios,
-* mascotas,
-* veterinarios,
-* expedientes clínicos,
-* consultas médicas,
-* recetas veterinarias,
-* agenda médica,
-* reportes automatizados,
-* y notificaciones inteligentes.
+Sistema web moderno de gestión veterinaria desarrollado con Laravel, Livewire y TailwindCSS.
 
 ---
 
 # Características principales
 
-## Gestión de usuarios y roles
-
-* Administración de usuarios.
-* Roles y permisos dinámicos.
-* Control de acceso mediante autenticación.
-* Gestión de perfiles.
-
-## Gestión veterinaria
-
-* Registro de mascotas.
-* Expediente clínico completo.
-* Historial médico.
-* Información de alergias, condiciones crónicas y antecedentes.
-
-## Agenda médica inteligente
-
-* Configuración de horarios laborales por veterinario.
-* Visualización dinámica de citas.
-* Estado visual de citas:
-
-  * Pendiente
-  * En proceso
-  * Finalizada
-
-## Consultas veterinarias
-
-* Registro de diagnóstico.
-* Tratamiento médico.
-* Notas clínicas.
-* Gestión de medicamentos.
-* Historial de consultas anteriores.
-
-## Generación automática de PDF
-
-* Comprobantes de citas.
-* Recetas veterinarias.
-* Descarga automática de documentos clínicos.
-
-## Sistema de correos automáticos
-
-* Envío de recetas veterinarias por correo.
-* Reportes automáticos diarios.
-* Agenda diaria para veterinarios.
-* Reporte consolidado para administración.
-
-## Automatización y Scheduler
-
-El sistema implementa automatización backend mediante Laravel Task Scheduling:
-
-* envío automático de reportes,
-* recordatorios,
-* procesos clínicos programados.
-
-Comandos automatizados:
-
-```bash
-php artisan puppycare:automate
-```
-
-Scheduler:
-
-```php
-Schedule::command('puppycare:automate')->dailyAt('08:00');
-Schedule::command('puppycare:automate')->dailyAt('18:30');
-```
+* Gestión de usuarios y roles
+* Gestión de mascotas y expedientes clínicos
+* Agenda veterinaria
+* Consultas médicas
+* Generación de recetas PDF
+* Correos automáticos
+* Automatización con Scheduler
+* Dashboard moderno estilo SaaS
 
 ---
 
 # Tecnologías utilizadas
 
-## Backend
-
 * Laravel
 * Livewire
-* PHP
-* MySQL
-
-## Frontend
-
 * TailwindCSS
-* Flowbite
+* MySQL
+* Jetstream
 * WireUI
-* FontAwesome
-
-## Librerías adicionales
-
 * DomPDF
-* Laravel Jetstream
-* Rappasoft Livewire Tables
 
 ---
 
-# Diseño UI/UX
+# Instalación del proyecto
 
-PuppyCare incorpora una interfaz moderna inspirada en dashboards SaaS:
-
-* glassmorphism,
-* transparencias,
-* diseño responsive,
-* sidebar moderna,
-* componentes visuales dinámicos,
-* paleta clínica verde/emerald.
-
----
-
-# Funcionalidades destacadas
-
-## Dashboard moderno
-
-* Navegación lateral premium.
-* Efectos visuales modernos.
-* Interfaz responsiva.
-
-## Sistema de búsqueda dinámica
-
-* Filtrado en tiempo real.
-* Estados vacíos personalizados.
-* Experiencia de usuario moderna.
-
-## Automatización clínica
-
-* Correos automáticos.
-* Scheduler backend.
-* Recordatorios inteligentes.
-
----
-
-# Instalación
-
-## Clonar repositorio
+## 1. Clonar repositorio
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/susanjacke24-dev/puppycare-system.git
 ```
 
-## Instalar dependencias
+---
+
+## 2. Instalar dependencias
 
 ```bash
 composer install
 npm install
 ```
 
-## Variables de entorno
+---
+
+## 3. Configurar variables de entorno
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-## Migraciones
+---
+
+## 4. Configurar base de datos
+
+Crear una base de datos llamada:
+
+```plaintext
+puppycare_db
+```
+
+---
+
+## 5. Ejecutar migraciones
 
 ```bash
 php artisan migrate
 ```
 
-## Storage
+---
+
+## 6. Crear enlace de storage
 
 ```bash
 php artisan storage:link
 ```
 
-## Ejecutar proyecto
+---
+
+## 7. Ejecutar proyecto
 
 ```bash
 php artisan serve
@@ -188,59 +92,97 @@ npm run dev
 
 ---
 
-# Scheduler
+# Scheduler y automatización
 
-Para activar tareas automáticas:
+El sistema implementa automatización mediante Laravel Scheduler.
+
+Ejecutar:
 
 ```bash
 php artisan schedule:work
 ```
 
----
+Comandos automatizados:
 
-# Credenciales SMTP
-
-El sistema utiliza Gmail SMTP para:
-
-* recetas médicas,
-* reportes automáticos,
-* comprobantes clínicos.
+* envío de reportes diarios,
+* envío de recetas,
+* automatización clínica.
 
 ---
 
-# Arquitectura del sistema
+# Credenciales de prueba
 
-PuppyCare implementa:
+## Administrador
+
+Email:
+
+```plaintext
+susanjacke.24@gmail.com
+```
+
+Password:
+
+```plaintext
+password
+```
+
+---
+
+## Veterinario
+
+Email:
+
+```plaintext
+mtromisset21@gmail.com
+```
+
+Password:
+
+```plaintext
+password
+```
+
+---
+
+# Diagrama Entidad-Relación (DER)
+
+## Entidades principales
+
+* users
+* roles
+* patients
+* appointments
+* medicines
+* prescriptions
+* schedules
+
+Relaciones:
+
+* Un usuario puede tener múltiples mascotas.
+* Un veterinario puede tener múltiples citas.
+* Una cita pertenece a una mascota.
+* Una consulta genera recetas y medicamentos.
+
+---
+
+# Arquitectura
+
+El sistema utiliza:
 
 * arquitectura MVC,
 * componentes Livewire,
-* automatización backend,
 * relaciones Eloquent,
-* componentes reutilizables.
+* automatización backend,
+* diseño responsive.
 
 ---
 
 # Estado del proyecto
 
-Proyecto funcional y en desarrollo continuo.
-
-Próximas mejoras:
-
-* estadísticas clínicas,
-* dashboard analítico,
-* modo oscuro completo,
-* calendario avanzado,
-* notificaciones en tiempo real,
-* integración móvil.
+Proyecto académico funcional en desarrollo continuo.
 
 ---
 
 # Autor
 
-Desarrollado por Susan Jackeline y colaboradores académicos.
-
----
-
-# Licencia
-
-Proyecto académico y de desarrollo profesional.
+Susan Jackeline y colaboradores académicos.
