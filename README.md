@@ -183,7 +183,7 @@ Proyecto académico funcional en desarrollo continuo.
 
 ---
 
-# Susan Jckeline Chin Tec 8SC
+# Susan Jackeline Chin Tec 8SC
 # Diagrama Entidad-Relación (DER)
 
 [Ver DER en PDF](docs/DER-PuppyCare.pdf)
