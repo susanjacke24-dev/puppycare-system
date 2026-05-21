@@ -32,13 +32,13 @@
     <wireui:scripts />
 </head>
 
-<body class="font-sans antialiased bg-gray-100">
+<body class="font-sans antialiased bg-gradient-to-br from-slate-100 via-green-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-800 dark:text-slate-100">
 
 @include('layouts.includes.Admin.navigation')
 @include('layouts.includes.Admin.sidebar')
 
-<div class="p-4 sm:ml-64 mt-14">
-    <div class="mt-14 flex justify-between items-center w-full">
+<div class="p-6 sm:ml-64 mt-14 min-h-screen transition-all duration-300">
+    <div class="mt-10 mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         @include('layouts.includes.Admin.breadcrumb')
 
         @isset($action)
